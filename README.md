@@ -1,2 +1,2 @@
-# go-template-web
-go-template-web is a template of golang web server.
+# go-search-file
+go-search-file is a template of golang command line program.

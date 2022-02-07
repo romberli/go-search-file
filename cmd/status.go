@@ -24,8 +24,8 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	"github.com/romberli/go-template/config"
-	"github.com/romberli/go-template/pkg/message"
+	"github.com/romberli/go-search-file/config"
+	"github.com/romberli/go-search-file/pkg/message"
 )
 
 // statusCmd represents the status command

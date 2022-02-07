@@ -23,8 +23,8 @@ import (
 	"strings"
 
 	"github.com/pingcap/errors"
-	"github.com/romberli/go-template/config"
-	"github.com/romberli/go-template/pkg/message"
+	"github.com/romberli/go-search-file/config"
+	"github.com/romberli/go-search-file/pkg/message"
 	"github.com/romberli/go-util/constant"
 	"github.com/romberli/log"
 	"github.com/spf13/cast"
@@ -58,9 +58,9 @@ var (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "go-template-cli",
-	Short: "go-template-cli",
-	Long:  `go-template-cli is a template of golang command line program`,
+	Use:   "go-search-file",
+	Short: "go-search-file",
+	Long:  `go-search-file is a template of golang command line program`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// if no subcommand is set, it will print help information.
 		if len(args) == 0 {

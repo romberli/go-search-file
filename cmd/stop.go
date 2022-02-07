@@ -19,8 +19,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/romberli/go-template/config"
-	"github.com/romberli/go-template/pkg/message"
+	"github.com/romberli/go-search-file/config"
+	"github.com/romberli/go-search-file/pkg/message"
 	"github.com/romberli/go-util/constant"
 	"github.com/romberli/go-util/linux"
 	"github.com/romberli/log"

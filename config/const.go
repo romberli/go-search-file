@@ -22,7 +22,7 @@ import (
 
 // global constant
 const (
-	DefaultCommandName        = "go-template-cli"
+	DefaultCommandName        = "go-search-file"
 	DefaultDaemon             = false
 	DefaultBaseDir            = constant.CurrentDir
 	DefaultLogDir             = "./log"

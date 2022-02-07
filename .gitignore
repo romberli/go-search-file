@@ -7,7 +7,7 @@
 ./bin/*
 *.pid
 *.test
-go-template
+go-search-file
 
 # config
 .idea/
