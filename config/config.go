@@ -176,7 +176,9 @@ func ValidateExcel() error {
 	if err != nil {
 		return errors.Trace(err)
 	}
-
+	if path == constant.EmptyString {
+		return message.NewMessage(message.ErrEmptyPath)
+	}
 	isAbs := filepath.IsAbs(path)
 	if !isAbs {
 		path, err = filepath.Abs(path)
@@ -189,9 +191,12 @@ func ValidateExcel() error {
 		return errors.Trace(err)
 	}
 
-	_, err = cast.ToStringE(viper.Get(KeywordKey))
+	keyword, err := cast.ToStringE(viper.Get(KeywordKey))
 	if err != nil {
 		return errors.Trace(err)
+	}
+	if keyword == constant.EmptyString {
+		return message.NewMessage(message.ErrEmptyKeyword)
 	}
 
 	return nil

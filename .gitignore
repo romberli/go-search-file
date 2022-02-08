@@ -14,7 +14,8 @@ go-search-file
 */.idea/
 .DS_Store
 test/*.json
-config/go_template.yaml
+config/go_search_file.yaml
+
 
 # output
 *.out

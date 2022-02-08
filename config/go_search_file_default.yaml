@@ -1,0 +1,52 @@
+# description: configuration file path, if it's specified as relative path,
+# then directory of binary file will be the base directory of configuration file,
+# it is recommended to specify absolute path.
+# command-line-argument: --config
+# type: string
+# default: None
+config: go_search_file.yaml
+
+# log configuration
+log:
+  # description: log file path, if it's specified as relative path,
+  # then directory of binary file will be the base directory of log file,
+  # it is recommended to specify absolute path.
+  # type: string
+  # default: log/run.log
+  file: log/run.log
+  # description: log level
+  # type: string
+  # available: [debug, info, warn, error, fatal]
+  # default: info
+  level: info
+  # description: log format
+  # type: string
+  # available: [text, json]
+  # default: text
+  format: text
+  # description: log file max size, unit is MB
+  # type: int
+  # default: 100
+  maxSize: 100 # MB
+  # description: specify how many days the log file will be kept after rotating,
+  # older than max-days files will be removed automatically.
+  # type: int
+  # default: 7
+  maxDays: 7
+  # description: specify how many files will be kept after rotating,
+  # the oldest log files will be removed automatically.
+  # type: int
+  # default: 5
+  maxBackups: 5
+
+# description: search path
+# command-line-argument: --path
+# type: string
+# default: ./
+path: ./
+
+# description: search keyword
+# command-line-argument: --keyword
+# type: string
+# default: "sadfio3mj23gsk9lj8ou"
+keyword: "sadfio3mj23gsk9lj8ou"
