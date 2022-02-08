@@ -29,7 +29,7 @@ func FindExcelFile(path string) ([]string, error) {
 		}
 	}
 
-	err = findExcelFile(path, files)
+	err = findExcelFile(path, &files)
 	if err != nil {
 		return nil, err
 	}
@@ -37,7 +37,7 @@ func FindExcelFile(path string) ([]string, error) {
 	return files, nil
 }
 
-func findExcelFile(path string, files []string) error {
+func findExcelFile(path string, files *[]string) error {
 	fileInfo, err := os.Stat(path)
 	if err != nil {
 		return err
@@ -45,7 +45,7 @@ func findExcelFile(path string, files []string) error {
 
 	if !fileInfo.IsDir() {
 		if IsExcel(fileInfo.Name()) {
-			files = append(files, path)
+			*files = append(*files, path)
 
 			return nil
 		}
@@ -67,7 +67,7 @@ func findExcelFile(path string, files []string) error {
 				return err
 			}
 		} else if IsExcel(p.Name()) {
-			files = append(files, pathName)
+			*files = append(*files, pathName)
 		}
 	}
 
