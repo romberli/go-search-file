@@ -19,7 +19,7 @@ import (
 	"github.com/romberli/go-util/config"
 )
 
-const DefaultMessageHeader = "GTW"
+const DefaultMessageHeader = "SF"
 
 var Messages = map[int]*config.ErrMessage{}
 

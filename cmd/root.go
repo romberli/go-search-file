@@ -48,19 +48,16 @@ var (
 	logMaxSize    int
 	logMaxDays    int
 	logMaxBackups int
-	// server
-	serverAddr         string
-	serverPid          int
-	serverPidFile      string
-	serverReadTimeout  int
-	serverWriteTimeout int
+	// excel
+	path    string
+	keyword string
 )
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "go-search-file",
 	Short: "go-search-file",
-	Long:  `go-search-file is a template of golang command line program`,
+	Long:  `go-search-file can search file content`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// if no subcommand is set, it will print help information.
 		if len(args) == 0 {
@@ -109,11 +106,6 @@ func init() {
 	rootCmd.PersistentFlags().IntVar(&logMaxSize, "log-max-size", constant.DefaultRandomInt, fmt.Sprintf("specify the log file max size(default: %d)", log.DefaultLogMaxSize))
 	rootCmd.PersistentFlags().IntVar(&logMaxDays, "log-max-days", constant.DefaultRandomInt, fmt.Sprintf("specify the log file max days(default: %d)", log.DefaultLogMaxDays))
 	rootCmd.PersistentFlags().IntVar(&logMaxBackups, "log-max-backups", constant.DefaultRandomInt, fmt.Sprintf("specify the log file max backups(default: %d)", log.DefaultLogMaxBackups))
-	// server
-	rootCmd.PersistentFlags().StringVar(&serverAddr, "server-addr", constant.DefaultRandomString, fmt.Sprintf("specify the server addr(default: %s)", config.DefaultServerAddr))
-	rootCmd.PersistentFlags().StringVar(&serverPidFile, "server-pid-file", constant.DefaultRandomString, fmt.Sprintf("specify the server pid file path(default: %s)", filepath.Join(config.DefaultBaseDir, fmt.Sprintf("%s.pid", config.DefaultCommandName))))
-	rootCmd.PersistentFlags().IntVar(&serverReadTimeout, "server-read-timeout", constant.DefaultRandomInt, fmt.Sprintf("specify the read timeout in seconds of http request(default: %d)", config.DefaultServerReadTimeout))
-	rootCmd.PersistentFlags().IntVar(&serverWriteTimeout, "server-write-timeout", constant.DefaultRandomInt, fmt.Sprintf("specify the write timeout in seconds of http request(default: %d)", config.DefaultServerWriteTimeout))
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
@@ -243,20 +235,13 @@ func OverrideConfig() (err error) {
 		viper.Set(config.LogMaxBackupsKey, logMaxBackups)
 	}
 
-	// override server
-	if serverAddr != constant.DefaultRandomString {
-		viper.Set(config.ServerAddrKey, serverAddr)
+	// override excel
+	if path != constant.DefaultRandomString {
+		viper.Set(config.PathKey, path)
 	}
-	if serverPidFile != constant.DefaultRandomString {
-		viper.Set(config.ServerPidFileKey, serverPidFile)
+	if keyword != constant.DefaultRandomString {
+		viper.Set(config.KeywordKey, keyword)
 	}
-	if serverReadTimeout != constant.DefaultRandomInt {
-		viper.Set(config.ServerReadTimeoutKey, serverReadTimeout)
-	}
-	if serverWriteTimeout != constant.DefaultRandomInt {
-		viper.Set(config.ServerWriteTimeoutKey, serverWriteTimeout)
-	}
-
 	// validate configuration
 	err = config.ValidateConfig()
 	if err != nil {

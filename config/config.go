@@ -49,12 +49,9 @@ func SetDefaultConfig(baseDir string) {
 	viper.SetDefault(LogMaxSizeKey, log.DefaultLogMaxSize)
 	viper.SetDefault(LogMaxDaysKey, log.DefaultLogMaxDays)
 	viper.SetDefault(LogMaxBackupsKey, log.DefaultLogMaxBackups)
-	// server
-	viper.SetDefault(ServerAddrKey, DefaultServerAddr)
-	defaultPidFile := filepath.Join(baseDir, fmt.Sprintf("%s.pid", DefaultCommandName))
-	viper.SetDefault(ServerPidFileKey, defaultPidFile)
-	viper.SetDefault(ServerReadTimeoutKey, DefaultServerReadTimeout)
-	viper.SetDefault(ServerWriteTimeoutKey, DefaultServerWriteTimeout)
+	// excel
+	viper.SetDefault(PathKey, constant.CurrentDir)
+	viper.SetDefault(KeywordKey, constant.DefaultRandomString)
 }
 
 // ValidateConfig validates if the configuration is valid
@@ -73,8 +70,8 @@ func ValidateConfig() (err error) {
 		merr = multierror.Append(merr, err)
 	}
 
-	// validate server section
-	err = ValidateServer()
+	// validate excel section
+	err = ValidateExcel()
 	if err != nil {
 		merr = multierror.Append(merr, err)
 	}
@@ -95,7 +92,7 @@ func ValidateLog() error {
 
 	merr := &multierror.Error{}
 
-	// validate log.FileName
+	// validate log.fileName
 	logFileName, err := cast.ToStringE(viper.Get(LogFileNameKey))
 	if err != nil {
 		merr = multierror.Append(merr, errors.Trace(err))
@@ -173,62 +170,31 @@ func ValidateLog() error {
 }
 
 // ValidateServer validates if server section is valid
-func ValidateServer() error {
-	merr := &multierror.Error{}
-
-	// validate server.addr
-	serverAddr, err := cast.ToStringE(viper.Get(ServerAddrKey))
+func ValidateExcel() error {
+	// validate path
+	path, err := cast.ToStringE(viper.Get(PathKey))
 	if err != nil {
-		merr = multierror.Append(merr, errors.Trace(err))
-	}
-	serverAddrList := strings.Split(serverAddr, constant.ColonString)
-
-	switch len(serverAddrList) {
-	case 2:
-		port := serverAddrList[1]
-		if !govalidator.IsPort(port) {
-			merr = multierror.Append(merr, message.NewMessage(message.ErrNotValidServerPort, constant.MinPort, constant.MaxPort, port))
-		}
-	default:
-		merr = multierror.Append(merr, message.NewMessage(message.ErrNotValidServerAddr, serverAddr))
+		return errors.Trace(err)
 	}
 
-	// validate server.pidFile
-	serverPidFile, err := cast.ToStringE(viper.Get(ServerPidFileKey))
-	if err != nil {
-		merr = multierror.Append(merr, errors.Trace(err))
-	}
-	isAbs := filepath.IsAbs(serverPidFile)
+	isAbs := filepath.IsAbs(path)
 	if !isAbs {
-		serverPidFile, err = filepath.Abs(serverPidFile)
+		path, err = filepath.Abs(path)
 		if err != nil {
-			merr = multierror.Append(merr, errors.Trace(err))
+			return errors.Trace(err)
 		}
 	}
-	ok, _ := govalidator.IsFilePath(serverPidFile)
+	ok, _ := govalidator.IsFilePath(path)
 	if !ok {
-		merr = multierror.Append(merr, message.NewMessage(message.ErrNotValidPidFile, serverPidFile))
+		return errors.Trace(err)
 	}
 
-	// validate server.readTimeout
-	serverReadTimeout, err := cast.ToIntE(viper.Get(ServerReadTimeoutKey))
+	_, err = cast.ToStringE(viper.Get(KeywordKey))
 	if err != nil {
-		merr = multierror.Append(merr, errors.Trace(err))
-	}
-	if serverReadTimeout < MinServerReadTimeout || serverReadTimeout > MaxServerReadTimeout {
-		merr = multierror.Append(merr, message.NewMessage(message.ErrNotValidServerReadTimeout, MinServerReadTimeout, MaxServerWriteTimeout, serverReadTimeout))
+		return errors.Trace(err)
 	}
 
-	// validate server.writeTimeout
-	serverWriteTimeout, err := cast.ToIntE(viper.Get(ServerWriteTimeoutKey))
-	if err != nil {
-		merr = multierror.Append(merr, errors.Trace(err))
-	}
-	if serverWriteTimeout < MinServerWriteTimeout || serverWriteTimeout > MaxServerWriteTimeout {
-		merr = multierror.Append(merr, message.NewMessage(message.ErrNotValidServerWriteTimeout, MinServerWriteTimeout, MaxServerWriteTimeout, serverWriteTimeout))
-	}
-
-	return merr.ErrorOrNil()
+	return nil
 }
 
 // TrimSpaceOfArg trims spaces of given argument
