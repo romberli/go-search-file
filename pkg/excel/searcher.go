@@ -6,6 +6,7 @@ import (
 	"github.com/pingcap/errors"
 	"github.com/romberli/go-search-file/pkg/dependency"
 	"github.com/romberli/go-search-file/pkg/util"
+	"github.com/romberli/go-util/constant"
 	"github.com/xuri/excelize/v2"
 )
 
@@ -29,6 +30,7 @@ func (s *Searcher) GetResults() []dependency.Result {
 func (s *Searcher) Search(path, keyword string) ([]dependency.Result, error) {
 	var results []dependency.Result
 
+	keywordList := strings.Split(keyword, constant.VerticalBarString)
 	files, err := util.FindExcelFile(path)
 	if err != nil {
 		return nil, err
@@ -47,8 +49,11 @@ func (s *Searcher) Search(path, keyword string) ([]dependency.Result, error) {
 			}
 			for i, row := range rows {
 				for j, cell := range row {
-					if strings.Contains(cell, keyword) {
-						results = append(results, NewResult(file, i, util.ConvertIntToAlphabet(j)))
+					for _, word := range keywordList {
+						word = strings.TrimSpace(word)
+						if strings.Contains(cell, word) {
+							results = append(results, NewResult(file, i+1, util.ConvertIntToAlphabet(j), word))
+						}
 					}
 				}
 			}

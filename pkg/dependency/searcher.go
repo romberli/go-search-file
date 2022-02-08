@@ -7,6 +7,8 @@ type Result interface {
 	GetRow() int
 	// GetColumn returns the column
 	GetColumn() string
+	// GetKeyword returns the keyword
+	GetKeyword() string
 	// String returns the string value of the result
 	String() string
 }

@@ -9,17 +9,20 @@ import (
 var _ dependency.Result = (*Result)(nil)
 
 type Result struct {
-	file   string
-	row    int
-	column string
+	file    string
+	row     int
+	column  string
+	keyword string
 }
 
-func NewResult(file string, row int, column string) *Result {
+func NewResult(file string, row int, column string, keyword string) *Result {
 	return &Result{
-		file:   file,
-		row:    row,
-		column: column,
+		file:    file,
+		row:     row,
+		column:  column,
+		keyword: keyword,
 	}
+
 }
 
 // GetFile returns the file
@@ -37,7 +40,12 @@ func (r *Result) GetColumn() string {
 	return r.column
 }
 
+// GetKeyword returns the keyword
+func (r *Result) GetKeyword() string {
+	return r.keyword
+}
+
 // String returns the string value of the result
 func (r *Result) String() string {
-	return fmt.Sprintf("file: %s, row: %d, column: %s", r.GetFile(), r.GetRow(), r.GetColumn())
+	return fmt.Sprintf("文件名: %s, 单元格: %s%d, 关键字: %s", r.GetFile(), r.GetColumn(), r.GetRow(), r.GetKeyword())
 }
