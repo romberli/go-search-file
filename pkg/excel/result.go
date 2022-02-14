@@ -10,14 +10,16 @@ var _ dependency.Result = (*Result)(nil)
 
 type Result struct {
 	file    string
+	sheet   string
 	row     int
 	column  string
 	keyword string
 }
 
-func NewResult(file string, row int, column string, keyword string) *Result {
+func NewResult(file, sheet string, row int, column string, keyword string) *Result {
 	return &Result{
 		file:    file,
+		sheet:   sheet,
 		row:     row,
 		column:  column,
 		keyword: keyword,
@@ -28,6 +30,11 @@ func NewResult(file string, row int, column string, keyword string) *Result {
 // GetFile returns the file
 func (r *Result) GetFile() string {
 	return r.file
+}
+
+// GetSheet returns the sheet
+func (r *Result) GetSheet() string {
+	return r.sheet
 }
 
 // GetRow returns the row
@@ -47,5 +54,5 @@ func (r *Result) GetKeyword() string {
 
 // String returns the string value of the result
 func (r *Result) String() string {
-	return fmt.Sprintf("文件名: %s, 单元格: %s%d, 关键字: %s", r.GetFile(), r.GetColumn(), r.GetRow(), r.GetKeyword())
+	return fmt.Sprintf("文件名: %s, 工作表： %s 单元格: %s%d, 关键字: %s", r.GetFile(), r.GetSheet(), r.GetColumn(), r.GetRow(), r.GetKeyword())
 }

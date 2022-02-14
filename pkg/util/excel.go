@@ -11,9 +11,10 @@ import (
 )
 
 const (
-	defaultXLSXSuffix = ".xlsx"
-	alphabetNum       = 25
-	minAlphabetAscii  = 65
+	defaultXLSXSuffix    = ".xlsx"
+	defaultTmpFilePrefix = "~$"
+	alphabetNum          = 25
+	minAlphabetAscii     = 65
 )
 
 func FindExcelFile(path string) ([]string, error) {
@@ -75,7 +76,7 @@ func findExcelFile(path string, files *[]string) error {
 }
 
 func IsExcel(file string) bool {
-	return strings.HasSuffix(file, defaultXLSXSuffix)
+	return strings.HasSuffix(file, defaultXLSXSuffix) && !strings.HasPrefix(file, defaultTmpFilePrefix)
 }
 
 func ConvertIntToAlphabet(index int) string {

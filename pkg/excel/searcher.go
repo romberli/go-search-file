@@ -52,7 +52,7 @@ func (s *Searcher) Search(path, keyword string) ([]dependency.Result, error) {
 					for _, word := range keywordList {
 						word = strings.TrimSpace(word)
 						if strings.Contains(cell, word) {
-							results = append(results, NewResult(file, i+1, util.ConvertIntToAlphabet(j), word))
+							results = append(results, NewResult(file, sheet, i+1, util.ConvertIntToAlphabet(j), word))
 						}
 					}
 				}
